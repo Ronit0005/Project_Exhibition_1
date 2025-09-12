@@ -103,7 +103,7 @@ tree_rmses = -cross_val_score(
     cv=100
 )
 
-print("Cross-Validation Performance (Decision Tree):")
+print("\nCross-Validation Performance (Decision Tree):")
 print(pd.Series(tree_rmses).describe()*100)
 
 
@@ -119,7 +119,7 @@ lin_rmses = -cross_val_score(
     cv=100
 )
 
-print("Cross-Validation Performance (Linear Regression):")
+print("\nCross-Validation Performance (Linear Regression):")
 print(pd.Series(lin_rmses).describe()*100)
 
 
@@ -135,7 +135,7 @@ rand_rmses = -cross_val_score(
     cv=100
 )
 
-print("Cross-Validation Performance (Random Forest):")
+print("\nCross-Validation Performance (Random Forest):")
 print(pd.Series(rand_rmses).describe()*100)
 
 # Gradient Boosting Classifier :-
@@ -150,7 +150,7 @@ grad_rmses = -cross_val_score(
     cv=10
 )
 
-print("Cross-Validation Performance (Gradient Boosting ):")
+print("\nCross-Validation Performance (Gradient Boosting ):")
 print(pd.Series(grad_rmses).describe()*100)
 
 # Xgboost
