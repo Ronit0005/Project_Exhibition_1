@@ -66,7 +66,8 @@ if not os.path.exists(MODEL_FILE):
     Data_labels = Data["Heart Attack Risk"].copy()
     Data_features = Data.drop("Heart Attack Risk", axis=1)
 
-    # Data_features.dropna(subset=['Blood Pressure'], inplace=True)
+
+
     Data_features[['Systolic Blood Pressure', 'Diastolic Blood Pressure']] = Data_features['Blood Pressure'].str.split('/', expand=True).astype(float)
     Data_features.drop("Blood Pressure",axis=1,inplace=True)
     Data_features.drop("Patient ID",axis=1,inplace=True)

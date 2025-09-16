@@ -21,6 +21,8 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
 
 def build_pipeline(num_attribs, cat_attribs):
     num_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median")),("scaler", StandardScaler())])
@@ -139,7 +141,7 @@ print("Cross-Validation Performance (Random Forest):")
 print(pd.Series(rand_rmses).describe()*100)
 
 # Gradient Boosting Classifier :-
-grad_reg = RandomForestClassifier(random_state=42)
+grad_reg = GradientBoostingClassifier(random_state=42)
 grad_reg.fit(Data_prepared, Data_labels)
 
 grad_rmses = -cross_val_score(
@@ -156,20 +158,20 @@ print(pd.Series(grad_rmses).describe()*100)
 # Xgboost
 
 xgb_clf = XGBClassifier(random_state=42, use_label_encoder=False, eval_metric='logloss')
-xgb_scores = -cross_val_score(xgb_clf, Data_prepared, Data_labels, scoring="neg_root_mean_squared_error", cv=100)
+xgb_scores = -cross_val_score(xgb_clf, Data_prepared, Data_labels,          scoring="neg_root_mean_squared_error", cv=100)
 print("Cross-Validation Accuracy (XGBoost):")
 print(pd.Series(xgb_scores).describe()*100)
 
 # LightGBM
-lgbm_clf = LGBMClassifier(random_state=42)
-lgbm_scores = -cross_val_score(lgbm_clf, Data_prepared, Data_labels, scoring="neg_root_mean_squared_error", cv=100)
+lgbm_clf = LGBMClassifier(random_state=42,force_row_wise=True)
+lgbm_scores = cross_val_score(lgbm_clf, Data_prepared, Data_labels, cv=100)
 
 print("Cross-Validation Accuracy (LightGBM):")
 print(pd.Series(lgbm_scores).describe()*100)
 
 # CatBoost
 cat_clf = CatBoostClassifier(random_state=42, verbose=0)
-cat_scores = cross_val_score(cat_clf,
+cat_scores = -cross_val_score(cat_clf,
                              Data_prepared,
                              Data_labels,
                              scoring="neg_root_mean_squared_error", cv=100)
@@ -201,7 +203,7 @@ print("Best cross-validation accuracy: ", grid_search.best_score_*100)
 
 # Ensemble Model : Training 3 models LightGBM , XGBoost , CatBoost
 
-lgbm_clf = LGBMClassifier(random_state=42)
+lgbm_clf = LGBMClassifier(random_state=42,force_row_wise=True)
 lgbm_clf.fit(Data_prepared, Data_labels)
 print("LightGBM training completed")
 
@@ -237,4 +239,4 @@ final_predictions = voting_clf.predict(X_test_prepared)
 print("Final Model Performance Report:")
 print(classification_report(y_test, final_predictions))
 
-print(f"Accuracy of ensemble model {accuracy_score(y_test, final_predictions):.3f}")
+print(f"Accuracy of ensemble model {accuracy_score(y_test, final_predictions)*100}")
