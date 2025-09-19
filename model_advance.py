@@ -149,7 +149,7 @@ grad_rmses = -cross_val_score(
     Data_prepared,
     Data_labels,
     scoring="neg_root_mean_squared_error",
-    cv=10
+    cv=100
 )
 
 print("Cross-Validation Performance (Gradient Boosting ):")

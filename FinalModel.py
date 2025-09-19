@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 
 # Creating a pixel file for model and data pieline
 MODEL_FILE = "model.pkl"
@@ -86,7 +86,7 @@ if not os.path.exists(MODEL_FILE):
     Data_prepared = pipeline.fit_transform(Data_features)
 
 
-    model = RandomForestClassifier(random_state=42)
+    model = DecisionTreeClassifier(random_state=42)
     model.fit(Data_prepared, Data_labels)
 
     # Saving thee model and data pipeline using the pi
